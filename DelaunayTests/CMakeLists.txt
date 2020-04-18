@@ -8,6 +8,11 @@ set(Sources
 
 add_executable(${PROJECT_NAME} ${Sources})
 
+add_subdirectory(googletest)
+
+include_directories(../DelaunayT/inc)
+link_directories(../DelaunayT/src)
+
 target_link_libraries(${PROJECT_NAME} PUBLIC
         gtest_main
         DelaunayT)

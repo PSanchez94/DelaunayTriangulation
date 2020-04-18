@@ -9,4 +9,6 @@ set(Headers
 set(Sources
         src/Vertex.cpp)
 
+include_directories(${PROJECT_SOURCE_DIR}/inc)
+
 add_library(${PROJECT_NAME} SHARED ${Sources} ${Headers})

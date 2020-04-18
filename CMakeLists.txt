@@ -7,4 +7,3 @@ add_executable(DelaunayTriangulation main.cpp)
 
 add_subdirectory(DelaunayT)
 add_subdirectory(DelaunayTests)
-add_subdirectory(googletest)
