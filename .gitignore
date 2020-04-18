@@ -30,6 +30,7 @@
 
 cmake-build-debug
 cmake-build-default
+.idea/*.xml
 #**/CMakeCache.txt
 #**/cmake_install.cmake
 #**/install_manifest.txt
