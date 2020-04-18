@@ -4,3 +4,5 @@ project(DelaunayTriangulation)
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(DelaunayTriangulation main.cpp)
+
+add_subdirectory(gtests)
