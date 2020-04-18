@@ -28,9 +28,9 @@
 #*.out
 #*.app
 
-cmake-build-debug
-cmake-build-default
-.idea/*.xml
+**/cmake-build-debug
+**/cmake-build-default
+**/.idea
 #**/CMakeCache.txt
 #**/cmake_install.cmake
 #**/install_manifest.txt
