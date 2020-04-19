@@ -1,7 +1,3 @@
-//
-// Created by KasiSanchez on 18/04/2020.
-//
-
 #ifndef VERTEX_HPP
 #define VERTEX_HPP
 
@@ -10,10 +6,10 @@ struct Vertex {
     numType X;
     numType Y;
 
-    Vertex(numType x, numType y);
+    Vertex() : X(0), Y(0) { };
+    Vertex(numType x, numType y) : X(x), Y(y) { };
 
-    numType CrossProd(Vertex v);
-    bool operator==(Vertex v);
+    bool operator==(Vertex v) { return (X == v.X) && (Y == v.Y); }
 } ;
 
-#endif //DELAUNAYTRIANGULATION_VERTEX_H
+#endif //VERTEX_H

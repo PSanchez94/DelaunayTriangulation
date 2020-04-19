@@ -6,13 +6,13 @@ set(CMAKE_CXX_STANDARD 11)
 set(Sources
         VertexTest.cpp)
 
-add_executable(${PROJECT_NAME} ${Sources})
+
 
 add_subdirectory(googletest)
 
 include_directories(../DelaunayT/inc)
-link_directories(../DelaunayT/src)
 
+add_executable(${PROJECT_NAME} ${Sources})
 target_link_libraries(${PROJECT_NAME} PUBLIC
         gtest_main
         DelaunayT)

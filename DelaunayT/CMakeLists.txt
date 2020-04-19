@@ -4,10 +4,11 @@ project(DelaunayT)
 set(CMAKE_CXX_STANDARD 11)
 
 set(Headers
-        inc/Vertex.hpp)
+        inc/Vertex.hpp
+        inc/Triangle.hpp)
 
 set(Sources
-        src/Vertex.cpp)
+        src/Triangle.cpp)
 
 include_directories(${PROJECT_SOURCE_DIR}/inc)
 
