@@ -2,8 +2,6 @@
 
 #include "Vertex.hpp"
 
-/* NOLINT */
-
 class VertexTest : public::testing::Test {
 protected:
 
