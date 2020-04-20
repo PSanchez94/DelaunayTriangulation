@@ -17,7 +17,7 @@ struct Vector {
         Y = u.Y - v.Y;
     }
 
-    bool operator==(Vector) { return (X == v.X) && (Y == v.Y); }
+    bool operator==(Vector v) { return (X == v.X) && (Y == v.Y); }
 
     numType dotProd(Vector v) {
         return (X * v.X) + (Y * v.Y);
@@ -26,6 +26,8 @@ struct Vector {
     numType normVal(Vector<numType> v) {
         return (X * v.Y) - (Y * v.X);
     }
+
+
 };
 
 #endif //VECTOR_HPP

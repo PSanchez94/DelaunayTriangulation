@@ -6,7 +6,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(Headers
         inc/Vertex.hpp
         inc/Vector.hpp
-        inc/Triangle.hpp)
+        inc/Triangle.hpp
+        inc/DelaunayT.hpp)
 
 set(Sources
         src/Triangle.cpp)

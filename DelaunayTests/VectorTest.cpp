@@ -33,3 +33,10 @@ TEST_F(VectorTest, FromVertex) {
     ASSERT_EQ(testVector.X, 1.0f);
     ASSERT_EQ(testVector.Y, 1.0f);
 }
+
+TEST_F(VectorTest, dotProdShouldBe10) {
+    Vector<float> vectorA = Vector<float>(2.0f, 2.0f);
+    Vector<float> vectorB = Vector<float>(3.0f, 2.0f);
+
+    ASSERT_EQ(vectorA.dotProd(vectorB), 10.0f);
+}
