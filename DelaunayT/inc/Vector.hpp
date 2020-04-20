@@ -26,8 +26,6 @@ struct Vector {
     numType normVal(Vector<numType> v) {
         return (X * v.Y) - (Y * v.X);
     }
-
-
 };
 
 #endif //VECTOR_HPP
