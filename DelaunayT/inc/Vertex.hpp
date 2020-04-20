@@ -10,6 +10,6 @@ struct Vertex {
     Vertex(numType x, numType y) : X(x), Y(y) { };
 
     bool operator==(Vertex v) { return (X == v.X) && (Y == v.Y); }
-} ;
+};
 
 #endif //VERTEX_H

@@ -4,10 +4,9 @@ project(DelaunayTests)
 set(CMAKE_CXX_STANDARD 11)
 
 set(Sources
+        TriangleTest.cpp
         VectorTest.cpp
         VertexTest.cpp)
-
-
 
 add_subdirectory(googletest)
 

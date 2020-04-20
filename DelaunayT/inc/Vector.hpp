@@ -1,6 +1,7 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
+#include <iostream>
 #include "Vertex.hpp"
 
 template <class numType>
@@ -17,6 +18,10 @@ struct Vector {
     }
 
     bool operator==(Vector v) { return (X == v.X) && (Y == v.Y); }
+
+    numType CrossProd(Vector<numType> v) {
+        return (X * v.Y) - (Y * v.X);
+    }
 };
 
 
