@@ -4,6 +4,7 @@ project(DelaunayTests)
 set(CMAKE_CXX_STANDARD 11)
 
 set(Sources
+        DelaunayTTest.cpp
         TriangleTest.cpp
         VectorTest.cpp
         VertexTest.cpp)

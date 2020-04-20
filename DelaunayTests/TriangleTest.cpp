@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Vector.hpp"
-#include "Vertex.hpp"
 #include "Triangle.hpp"
 
 class TriangleTest : public::testing::Test {

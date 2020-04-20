@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "Vector.hpp"
-#include "Vertex.hpp"
 
 class VectorTest : public::testing::Test {
 protected:
