@@ -41,13 +41,3 @@ TEST_F(TriangleTest, YValuesAccess) {
     ASSERT_EQ(testTriangle.vertexList[1]->Y, v2.Y);
     ASSERT_EQ(testTriangle.vertexList[2]->Y, v3.Y);
 }
-
-TEST_F(TriangleTest, VertexPointedV3Switched) {
-
-    v3 = Vertex<float>(-1.0f, -2.0f);
-    testTriangle = Triangle<float>(v1, v2, v3);
-
-    ASSERT_EQ(testTriangle.vertexList[0]->Y, v1.Y);
-    ASSERT_EQ(testTriangle.vertexList[2]->Y, v2.Y);
-    ASSERT_EQ(testTriangle.vertexList[1]->Y, v3.Y);
-}
