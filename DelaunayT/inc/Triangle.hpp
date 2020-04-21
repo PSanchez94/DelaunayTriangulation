@@ -43,6 +43,12 @@ public:
 
         return (a >= 0) && (b >= 0) && (a + b < 1);
     }
+
+    bool containsVertex(Vertex<numType> v ) {
+        for (int i = 0; i < 3; ++i){
+            return triangleList[i] == v;
+        }
+    }
 };
 
 #endif //TRIANGLE_HPP
