@@ -84,6 +84,8 @@ public:
                     if (CTriangle.containsVertex(*it)) { boundingTriangles.insert(CTriangle); }
                     else { triangleVec.insert(CTriangle); }
                 }
+            } else if (*it->PointOnEdge(v)) {
+
             }
         }
     }
