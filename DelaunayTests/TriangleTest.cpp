@@ -14,7 +14,7 @@ protected:
         v2 = Vertex<float>(0.0f, 3.0f);
         v3 = Vertex<float>(-3.0f, 0.0f);
 
-        testTriangle = Triangle<float>(v1, v2, v3);
+        testTriangle = Triangle<float>(&v1, &v2, &v3);
     }
 
     void TearDown() override { }

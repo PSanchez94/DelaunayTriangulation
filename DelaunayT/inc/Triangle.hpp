@@ -29,6 +29,10 @@ public:
         baryDenom = 1 /
                     (baryVec1.dotProd(baryVec1) * baryVec2.dotProd(baryVec2) -
                  baryVec1.dotProd(baryVec2) * baryVec1.dotProd(baryVec2));
+
+        std::cout << "Triangle Construction:";
+        baryVec1.print();
+        baryVec2.print(); std::cout  << baryDenom << "\n";
     }
 
     bool PointInside(Vertex<numType> v) {
@@ -37,6 +41,11 @@ public:
         Vector<numType> vector1v;
         vector1v.fromVertexes(vertexList[0], &v);
 
+        std::cout << "Point vec construction:";
+        baryVec1.print(); std::cout << "\n";
+        baryVec2.print(); std::cout << "\n";
+        vector1v.print(); std::cout << "\n";
+
         numType a = baryDenom *
                     (baryVec2.dotProd(baryVec2) * baryVec1.dotProd(vector1v)) -
                     (baryVec1.dotProd(baryVec2) * baryVec1.dotProd(vector1v));
@@ -44,7 +53,9 @@ public:
                     (baryVec1.dotProd(baryVec1) * baryVec2.dotProd(vector1v)) -
                     (baryVec1.dotProd(baryVec2) * baryVec1.dotProd(baryVec2));
 
-        return (a > 0) && (b > 0) && (a + b < 1);
+        std::cout << a << b << "\n";
+
+        return (a >= 0) && (b >= 0) && (a + b <= 1);
     }
 
     int PointOnEdge(Vertex<numType> v) {
@@ -71,15 +82,15 @@ public:
     }
 
     bool containsVertex(Vertex<numType> v ) {
-        for (auto u : vertexList){
+        for (Vertex<numType>* u : vertexList){
             return *u == v;
         }
         return false;
     }
 
     bool operator==(Triangle t) {
-        for (auto v : vertexList) {
-            return !t.containsVertex(*v);
+        for (Vertex<numType>* v : vertexList) {
+            return !t.containsVertex(v);
         }
         return false;
     }

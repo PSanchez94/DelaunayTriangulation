@@ -1,7 +1,6 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <iostream>
 #include "Vertex.hpp"
 
 template <class numType>
@@ -25,6 +24,10 @@ struct Vector {
 
     numType normVal(Vector<numType> v) {
         return (X * v.Y) - (Y * v.X);
+    }
+
+    void print() {
+        std::cout << "(" << X << ", " << Y << ")";
     }
 };
 

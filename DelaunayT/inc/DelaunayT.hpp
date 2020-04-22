@@ -13,31 +13,31 @@
 template<class numType>
 class DelaunayT {
 private:
-    std::vector<Vertex<numType> > vertexVec;
-    std::vector<Vertex<numType> > borderVertexVec;
+    std::vector<Vertex<numType> *> vertexVec;
+    std::vector<Vertex<numType> *> borderVertexVec;
 
-    std::vector<Triangle<numType> > triangleVec;
-    std::vector<Triangle<numType> > boundingTriangles;
-    std::vector<Triangle<numType> > allTriangles;
+    std::vector<Triangle<numType> *> triangleVec;
+    std::vector<Triangle<numType> *> boundingTriangles;
+    std::vector<Triangle<numType> *> allTriangles;
 
-    Vertex<numType> swVertex;
-    Vertex<numType> seVertex;
-    Vertex<numType> neVertex;
-    Vertex<numType> nwVertex;
+    Vertex<numType>* swVertex;
+    Vertex<numType>* seVertex;
+    Vertex<numType>* neVertex;
+    Vertex<numType>* nwVertex;
 
 public:
     DelaunayT() {
-        vertexVec = std::vector<Vertex<numType> >();
-        borderVertexVec = std::vector<Vertex<numType> >();
+        vertexVec = std::vector<Vertex<numType> *>();
+        borderVertexVec = std::vector<Vertex<numType> *>();
 
-        triangleVec = std::vector<Triangle<numType> >();
-        boundingTriangles = std::vector<Triangle<numType> >();
-        allTriangles = std::vector<Triangle<numType> >();
+        triangleVec = std::vector<Triangle<numType> *>();
+        boundingTriangles = std::vector<Triangle<numType> *>();
+        allTriangles = std::vector<Triangle<numType> *>();
 
-        swVertex = Vertex<numType>();
-        seVertex = Vertex<numType>();
-        neVertex = Vertex<numType>();
-        nwVertex = Vertex<numType>();
+        swVertex = new Vertex<numType>();
+        seVertex = new Vertex<numType>();
+        neVertex = new Vertex<numType>();
+        nwVertex = new Vertex<numType>();
     }
     explicit DelaunayT(std::vector<std::vector<numType> > input) {
 
@@ -45,21 +45,14 @@ public:
         std::random_shuffle ( input.begin(), input.end() );
 
         for (auto it = input.begin(); it != input.end(); ++it) {
-
             Vertex<numType> v = Vertex<numType>((*it)[0], (*it)[1]);
-            vertexVec.push_back(v);
+            vertexVec.push_back(&v);
             addPoint(v);
         }
     }
 
     void addPoint(Vertex<numType> v) {
-
-//        for (auto it : allTriangles ) {
-//            it.print();
-//        }
-        for (auto it = boundingTriangles.begin(); it != boundingTriangles.end(); ++it) {
-            it->print();
-
+        for (auto it : allTriangles) {
 
             if (it->PointInside(v)) {
                 Triangle<numType> ATriangle;
@@ -95,9 +88,9 @@ public:
                     it->triangleList[1] = &DTriangle;
 
                     //triangleVec.erase(it->triangleList[i]);
-                    allTriangles.push_back(DTriangle);
-                    for (auto it2 = borderVertexVec.begin(); it2 != borderVertexVec.end(); ++it2) {
-                        borderCheck(DTriangle, *it2);
+                    allTriangles.push_back(&DTriangle);
+                    for (auto it2 : borderVertexVec) {
+                        borderCheck(&DTriangle, it2);
                     }
 
                 } else {
@@ -120,20 +113,20 @@ public:
                     CTriangle.triangleList[2] = &BTriangle;
                     it->triangleList[1] = &CTriangle;
 
-                    triangleVec.erase(std::find(triangleVec.begin(), triangleVec.end(), *it));
-                    allTriangles.push_back(ATriangle);
-                    allTriangles.push_back(BTriangle);
-                    allTriangles.push_back(CTriangle);
+                    triangleVec.erase(std::find(triangleVec.begin(), triangleVec.end(), it));
+                    allTriangles.push_back(&ATriangle);
+                    allTriangles.push_back(&BTriangle);
+                    allTriangles.push_back(&CTriangle);
                 }
 
-                triangleVec.erase(it);
-                allTriangles.push_back(ATriangle);
-                allTriangles.push_back(BTriangle);
-                allTriangles.push_back(CTriangle);
-                for (auto it2 = borderVertexVec.begin(); it2 != borderVertexVec.end(); ++it2) {
-                    borderCheck(ATriangle, *it2);
-                    borderCheck(BTriangle, *it2);
-                    borderCheck(CTriangle, *it2);
+                triangleVec.erase(std::find(triangleVec.begin(), triangleVec.end(), it));
+                allTriangles.push_back(&ATriangle);
+                allTriangles.push_back(&BTriangle);
+                allTriangles.push_back(&CTriangle);
+                for (auto it2 : borderVertexVec) {
+                    borderCheck(&ATriangle, it2);
+                    borderCheck(&BTriangle, it2);
+                    borderCheck(&CTriangle, it2);
                 }
             } else {
                 v.print();
@@ -144,29 +137,29 @@ public:
     }
 
     void findBoundingTriangles(std::vector<std::vector<numType>> input) {
-        swVertex = Vertex<numType>(0, 0);
-        seVertex = Vertex<numType>(0, 0);
-        neVertex = Vertex<numType>(0, 0);
-        nwVertex = Vertex<numType>(0, 0);
+        swVertex = new Vertex<numType>(0, 0);
+        seVertex = new Vertex<numType>(0, 0);
+        neVertex = new Vertex<numType>(0, 0);
+        nwVertex = new Vertex<numType>(0, 0);
 
         for (auto it = input.begin(); it != input.end(); ++it) {
             numType percentage = 0.01;
 
-            if ((*it)[0] <= swVertex.X) {
-                swVertex.X = (*it)[0] + ((*it)[0] *percentage);
-                nwVertex.X = (*it)[0] + ((*it)[0] *percentage);
+            if ((*it)[0] <= swVertex->X) {
+                swVertex->X = (*it)[0] + ((*it)[0] *percentage);
+                nwVertex->X = (*it)[0] + ((*it)[0] *percentage);
             }
-            else if (((*it)[0]) >= seVertex.X) {
-                seVertex.X = (*it)[0] + ((*it)[0] *percentage);
-                neVertex.X = (*it)[0] + ((*it)[0] *percentage);
+            else if (((*it)[0]) >= seVertex->X) {
+                seVertex->X = (*it)[0] + ((*it)[0] *percentage);
+                neVertex->X = (*it)[0] + ((*it)[0] *percentage);
             }
-            if (((*it)[1]) <= swVertex.Y) {
-                swVertex.Y = (*it)[1] + ((*it)[1] *percentage);
-                seVertex.Y = (*it)[1] + ((*it)[1] *percentage);
+            if (((*it)[1]) <= swVertex->Y) {
+                swVertex->Y = (*it)[1] + ((*it)[1] *percentage);
+                seVertex->Y = (*it)[1] + ((*it)[1] *percentage);
             }
-            else if (((*it)[1]) >= nwVertex.Y) {
-                nwVertex.Y = (*it)[1] + ((*it)[1] *percentage);
-                neVertex.Y = (*it)[1] + ((*it)[1] *percentage);
+            else if (((*it)[1]) >= nwVertex->Y) {
+                nwVertex->Y = (*it)[1] + ((*it)[1] *percentage);
+                neVertex->Y = (*it)[1] + ((*it)[1] *percentage);
             }
         }
 
@@ -175,19 +168,20 @@ public:
         borderVertexVec.push_back(neVertex);
         borderVertexVec.push_back(nwVertex);
 
-        Triangle<numType> topTriangle = Triangle<numType>(&neVertex, &nwVertex, &swVertex);
-        Triangle<numType> botTriangle = Triangle<numType>(&swVertex, &seVertex, &neVertex);
-        topTriangle.triangleList[1] = &botTriangle;
-        botTriangle.triangleList[1] = &topTriangle;
+        Triangle<numType>* topTriangle = new Triangle<numType>(neVertex, nwVertex, swVertex);
+        Triangle<numType>* botTriangle = new Triangle<numType>(swVertex, seVertex, neVertex);
+        topTriangle->triangleList[1] = botTriangle;
+        botTriangle->triangleList[1] = topTriangle;
 
         boundingTriangles.push_back(topTriangle);
         boundingTriangles.push_back(botTriangle);
 
-        allTriangles.insert(allTriangles.end(), boundingTriangles.begin(), boundingTriangles.end());
+        allTriangles.push_back(topTriangle);
+        allTriangles.push_back(botTriangle);
     }
 
-    void borderCheck(Triangle<numType> t, Vertex<numType> v) {
-        if(t.containsVertex(v)) { boundingTriangles.push_back(t); }
+    void borderCheck(Triangle<numType> *t, Vertex<numType> *v) {
+        if(t->containsVertex(*v)) { boundingTriangles.push_back(t); }
         else { triangleVec.push_back(t); }
     }
 

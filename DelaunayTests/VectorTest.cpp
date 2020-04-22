@@ -28,7 +28,7 @@ TEST_F(VectorTest, FromVertex) {
     Vertex<float> vertexA = Vertex<float>(0.0f, 0.0f);
     Vertex<float> vertexB = Vertex<float>(1.0f, 1.0f);
 
-    testVector.fromVertexes(vertexA, vertexB);
+    testVector.fromVertexes(&vertexA, &vertexB);
     ASSERT_EQ(testVector.X, 1.0f);
     ASSERT_EQ(testVector.Y, 1.0f);
 }
