@@ -12,9 +12,9 @@ struct Vector {
     Vector() : X(0), Y(0) { }
     Vector(numType x, numType y) : X(x), Y(y) { }
 
-    void fromVertexes(Vertex<numType> v, Vertex<numType> u) {
-        X = u.X - v.X;
-        Y = u.Y - v.Y;
+    void fromVertexes(Vertex<numType> *v, Vertex<numType> *u) {
+        X = u->X - v->X;
+        Y = u->Y - v->Y;
     }
 
     bool operator==(Vector v) { return (X == v.X) && (Y == v.Y); }

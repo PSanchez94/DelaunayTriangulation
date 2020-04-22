@@ -14,10 +14,10 @@ public:
     numType baryDenom;
 
     Triangle() { }
-    Triangle(Vertex<numType> &v0, Vertex<numType> &v1, Vertex<numType> &v2) {
-        vertexList[0] = &v0;
-        vertexList[1] = &v1;
-        vertexList[2] = &v2;
+    Triangle(Vertex<numType> *v0, Vertex<numType> *v1, Vertex<numType> *v2) {
+        vertexList[0] = v0;
+        vertexList[1] = v1;
+        vertexList[2] = v2;
 
         triangleList[0] = nullptr;
         triangleList[1] = nullptr;
@@ -35,7 +35,7 @@ public:
 
         // Barycentric Coordinates Method
         Vector<numType> vector1v;
-        vector1v.fromVertexes(*vertexList[0], v);
+        vector1v.fromVertexes(vertexList[0], &v);
 
         numType a = baryDenom *
                     (baryVec2.dotProd(baryVec2) * baryVec1.dotProd(vector1v)) -
@@ -50,7 +50,7 @@ public:
     int PointOnEdge(Vertex<numType> v) {
 
         Vector<numType> vector1v;
-        vector1v.fromVertexes(*vertexList[0], v);
+        vector1v.fromVertexes(vertexList[0], &v);
 
         numType a = baryDenom *
                     (baryVec2.dotProd(baryVec2) * baryVec1.dotProd(vector1v)) -
@@ -93,6 +93,7 @@ public:
     void printVer() {
         std::cout << "Ver:";
         for (auto i : vertexList) {
+            std::cout << i;
             i->print();
         }
     }

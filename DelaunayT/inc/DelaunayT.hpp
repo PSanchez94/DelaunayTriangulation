@@ -44,17 +44,23 @@ public:
         findBoundingTriangles(input);
         std::random_shuffle ( input.begin(), input.end() );
 
-
         for (auto it = input.begin(); it != input.end(); ++it) {
-            Vertex<numType> v = Vertex<numType>((*it)[0], (*it)[1]);
 
+            Vertex<numType> v = Vertex<numType>((*it)[0], (*it)[1]);
             vertexVec.push_back(v);
             addPoint(v);
         }
     }
 
     void addPoint(Vertex<numType> v) {
-        for (auto it = allTriangles.begin(); it != allTriangles.end(); ++it) {
+
+//        for (auto it : allTriangles ) {
+//            it.print();
+//        }
+        for (auto it = boundingTriangles.begin(); it != boundingTriangles.end(); ++it) {
+            it->print();
+
+
             if (it->PointInside(v)) {
                 Triangle<numType> ATriangle;
                 Triangle<numType> BTriangle;
@@ -63,10 +69,10 @@ public:
                 if (it->PointOnEdge(v) != -1) {
                     int i = it->PointOnEdge(v);
 
-                    ATriangle = Triangle<numType>(*(it->vertexList[i]), *(it->vertexList[(i+1)%3]), v);
-                    BTriangle = Triangle<numType>(*(it->vertexList[i]), v, *(it->vertexList[(i+2)%3]));
-                    CTriangle = Triangle<numType>(*(it->vertexList[i]), *(it->vertexList[(i+1)%3]), v);
-                    Triangle<numType> DTriangle = Triangle<numType>(*(it->vertexList[i]), v, *(it->vertexList[(i+2)%3]));
+                    ATriangle = Triangle<numType>(it->vertexList[i], it->vertexList[(i+1)%3], &v);
+                    BTriangle = Triangle<numType>(it->vertexList[i], &v, it->vertexList[(i+2)%3]);
+                    CTriangle = Triangle<numType>(it->vertexList[i], it->vertexList[(i+1)%3], &v);
+                    Triangle<numType> DTriangle = Triangle<numType>(it->vertexList[i], &v, it->vertexList[(i+2)%3]);
 
                     ATriangle.triangleList[0] = &DTriangle;
                     ATriangle.triangleList[1] = &BTriangle;
@@ -95,9 +101,9 @@ public:
                     }
 
                 } else {
-                    ATriangle = Triangle<numType>(v, *(it->vertexList[0]), *( it->vertexList[1]));
-                    BTriangle = Triangle<numType>(v, *(it->vertexList[1]), *( it->vertexList[2]));
-                    CTriangle = Triangle<numType>(v, *(it->vertexList[2]), *( it->vertexList[0]));
+                    ATriangle = Triangle<numType>(&v, it->vertexList[0], it->vertexList[1]);
+                    BTriangle = Triangle<numType>(&v, it->vertexList[1], it->vertexList[2]);
+                    CTriangle = Triangle<numType>(&v, it->vertexList[2], it->vertexList[0]);
 
                     ATriangle.triangleList[0] = it->triangleList[2];
                     ATriangle.triangleList[1] = &BTriangle;
@@ -169,18 +175,13 @@ public:
         borderVertexVec.push_back(neVertex);
         borderVertexVec.push_back(nwVertex);
 
-        Triangle<numType> topTriangle = Triangle<numType>(neVertex, nwVertex, swVertex);
-        Triangle<numType> botTriangle = Triangle<numType>(swVertex, seVertex, neVertex);
+        Triangle<numType> topTriangle = Triangle<numType>(&neVertex, &nwVertex, &swVertex);
+        Triangle<numType> botTriangle = Triangle<numType>(&swVertex, &seVertex, &neVertex);
         topTriangle.triangleList[1] = &botTriangle;
         botTriangle.triangleList[1] = &topTriangle;
 
         boundingTriangles.push_back(topTriangle);
         boundingTriangles.push_back(botTriangle);
-
-        for (auto it : boundingTriangles) {
-            it.print();
-            std::cout << "\n";
-        }
 
         allTriangles.insert(allTriangles.end(), boundingTriangles.begin(), boundingTriangles.end());
     }
