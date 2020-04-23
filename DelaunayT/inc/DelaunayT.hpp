@@ -45,18 +45,18 @@ public:
         std::random_shuffle ( input.begin(), input.end() );
 
         for (auto it = input.begin(); it != input.end(); ++it) {
-            Vertex<numType> v = Vertex<numType>((*it)[0], (*it)[1]);
-            vertexVec.push_back(&v);
+            Vertex<numType>* v = new Vertex<numType>((*it)[0], (*it)[1]);
+            vertexVec.push_back(v);
             addPoint(v);
         }
     }
 
-    void addPoint(Vertex<numType> v) {
+    void addPoint(Vertex<numType> *v) {
         for (auto t : allTriangles) {
             std::cout << "Triangle address: " << &t << ". ";
             t->print();
             std::cout << "Point to add";
-            v.print();
+            v->print();
             std::cout << "\n";
 
             if (t->PointInside(v)) {
@@ -71,11 +71,11 @@ public:
 
                     int i = t->PointOnEdge(v);
 
-                    ATriangle = new Triangle<numType>(auxVer[i], auxVer[(i + 1) % 3], &v);
-                    BTriangle = new Triangle<numType>(auxVer[i], &v, auxVer[(i + 2) % 3]);
-                    Triangle<numType>* CTriangle = new Triangle<numType>(auxVer[i], auxVer[(i + 1) % 3], &v);
+                    ATriangle = new Triangle<numType>(auxVer[i], auxVer[(i + 1) % 3], v);
+                    BTriangle = new Triangle<numType>(auxVer[i], v, auxVer[(i + 2) % 3]);
+                    Triangle<numType>* CTriangle = new Triangle<numType>(auxVer[i], auxVer[(i + 1) % 3], v);
                     t->vertexList[0] = auxVer[i];
-                    t->vertexList[1] = &v;
+                    t->vertexList[1] = v;
                     t->vertexList[2] = auxVer[(i + 2) % 3];
 
                     ATriangle->triangleList[0] = t;
@@ -105,12 +105,14 @@ public:
                 } else {
                     std::cout << "Started Triangle Construction: ";
 
-                    ATriangle = new Triangle<numType>(&v, t->vertexList[0], t->vertexList[1]);
-                    BTriangle = new Triangle<numType>(&v, t->vertexList[1], t->vertexList[2]);
-                    t->vertexList[0] = &v;
+                    // Vertex definition
+                    ATriangle = new Triangle<numType>(v, t->vertexList[0], t->vertexList[1]);
+                    BTriangle = new Triangle<numType>(v, t->vertexList[1], t->vertexList[2]);
+                    t->vertexList[0] = v;
                     t->vertexList[1] = auxVer[2];
                     t->vertexList[2] = auxVer[0];
 
+                    // Neighbout definition
                     ATriangle->triangleList[0] = auxTri[2];
                     ATriangle->triangleList[1] = BTriangle;
                     ATriangle->triangleList[2] = t;
@@ -125,8 +127,16 @@ public:
                     t->triangleList[1] = ATriangle;
                     t->triangleList[2] = BTriangle;
                     auxTri[1] = t;
+
+                    std::cout << "Memory reeplacement; ";
+                    ATriangle->print();
+                    BTriangle->print();
+                    t->print();
+                    std::cout << "\n";
+                    std::cout << "This doesn't look like an issue";
                 }
 
+                t->calcBarycentric();
                 allTriangles.push_back(ATriangle);
                 allTriangles.push_back(BTriangle);
                 for (auto it2 : borderVertexVec) {
@@ -135,12 +145,12 @@ public:
                     borderCheck(t, it2);
                 }
 
-                v.print();
+                v->print();
                 std::cout << " Vertex was added" << "\n";
 
                 break;
             } else {
-                v.print();
+                v->print();
                 std::cout << " Vertex not inside this triangle" << "\n";
             }
         }
@@ -200,12 +210,20 @@ public:
         else { triangleVec.push_back(t); }
     }
 
-    std::vector<Triangle<numType> > getTriangles() {
+    std::vector<Vertex<numType> *> getBorderVertexes() {
+        return borderVertexVec;
+    }
+
+    std::vector<Triangle<numType> *> getTriangles() {
         return triangleVec;
     }
 
-    std::vector<Triangle<numType> > getVertexes() {
+    std::vector<Triangle<numType> *> getVertexes() {
         return vertexVec;
+    }
+
+    std::vector<Triangle<numType> *> getAllTriangles() {
+        return allTriangles;
     }
 
 };

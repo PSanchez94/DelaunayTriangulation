@@ -23,26 +23,32 @@ public:
         triangleList[1] = nullptr;
         triangleList[2] = nullptr;
 
+        std::cout << "Triangle Construction: ";
+        printVer();
+        calcBarycentric();
+    }
+
+    void calcBarycentric() {
         // Barycentric Coordinates
-        baryVec0.fromVertexes(v0, v2);
-        baryVec1.fromVertexes(v0, v1);
+        baryVec0.fromVertexes(vertexList[0], vertexList[2]);
+        baryVec1.fromVertexes(vertexList[0], vertexList[1]);
         baryDenom = 1 /
                     (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(baryVec1) -
                      baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVec1));
 
-
-
-        std::cout << "Triangle Construction: baryVec0:";
+        std::cout << "baryVec0:";
         baryVec0.print();
         std::cout << ". baryVec1: ";
         baryVec1.print(); std::cout << ". baryDenom: " <<baryDenom << "\n";
     }
 
-    bool PointInside(Vertex<numType> ver) {
+    bool PointInside(Vertex<numType>* ver) {
 
         // Barycentric Coordinates Method
         Vector<numType> baryVecV;
-        baryVecV.fromVertexes(vertexList[0], &ver);
+        baryVecV.fromVertexes(vertexList[0], ver);
+
+        calcBarycentric();
 
         std::cout << "Point vec construction:";
         baryVec0.print();
@@ -56,16 +62,13 @@ public:
                     (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(baryVecV) -
                     baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVecV));
 
-        ver.print();
-        std::cout << " u: " << u << ", v:" << v << "u+v: " << u + v << "\n";
-
         return (u >= 0) && (v >= 0) && (u + v <= 1);
     }
 
-    int PointOnEdge(Vertex<numType> ver) {
+    int PointOnEdge(Vertex<numType>* ver) {
 
         Vector<numType> baryVecV;
-        baryVecV.fromVertexes(vertexList[0], &ver);
+        baryVecV.fromVertexes(vertexList[0], ver);
 
         numType u = baryDenom *
                     (baryVec1.dotProd(baryVec1) * baryVec0.dotProd(baryVecV) -
