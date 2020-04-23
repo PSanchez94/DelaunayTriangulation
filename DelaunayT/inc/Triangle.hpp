@@ -9,8 +9,8 @@ public:
     Vertex<numType>* vertexList[3];
     Triangle<numType>* triangleList[3];
 
+    Vector<numType> baryVec0;
     Vector<numType> baryVec1;
-    Vector<numType> baryVec2;
     numType baryDenom;
 
     Triangle() { }
@@ -24,15 +24,16 @@ public:
         triangleList[2] = nullptr;
 
         // Barycentric Coordinates
-        baryVec1.fromVertexes(v0, v2);
-        baryVec2.fromVertexes(v0, v1);
+        baryVec0.fromVertexes(v0, v2);
+        baryVec1.fromVertexes(v0, v1);
         baryDenom = 1 /
-                    (baryVec1.dotProd(baryVec1) * baryVec2.dotProd(baryVec2) -
-                 baryVec1.dotProd(baryVec2) * baryVec1.dotProd(baryVec2));
+                    (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(baryVec1) -
+                     baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVec1));
 
-        std::cout << "Triangle Construction:";
-        baryVec1.print();
-        baryVec2.print(); std::cout  << baryDenom << "\n";
+        std::cout << "Triangle Construction: baryVec0:";
+        baryVec0.print();
+        std::cout << ". baryVec1: ";
+        baryVec1.print(); std::cout << ". baryDenom: " <<baryDenom << "\n";
     }
 
     bool PointInside(Vertex<numType> v) {
@@ -42,18 +43,19 @@ public:
         vector1v.fromVertexes(vertexList[0], &v);
 
         std::cout << "Point vec construction:";
+        baryVec0.print(); std::cout << "\n";
         baryVec1.print(); std::cout << "\n";
-        baryVec2.print(); std::cout << "\n";
         vector1v.print(); std::cout << "\n";
 
         numType a = baryDenom *
-                    (baryVec2.dotProd(baryVec2) * baryVec1.dotProd(vector1v)) -
-                    (baryVec1.dotProd(baryVec2) * baryVec1.dotProd(vector1v));
+                    (baryVec1.dotProd(baryVec1) * baryVec0.dotProd(vector1v)) -
+                    (baryVec0.dotProd(baryVec1) * baryVec0.dotProd(vector1v));
         numType b = baryDenom *
-                    (baryVec1.dotProd(baryVec1) * baryVec2.dotProd(vector1v)) -
-                    (baryVec1.dotProd(baryVec2) * baryVec1.dotProd(baryVec2));
+                    (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(vector1v)) -
+                    (baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVec1));
 
-        std::cout << a << b << "\n";
+        //v.print();
+        //std::cout << a << b << "\n";
 
         return (a >= 0) && (b >= 0) && (a + b <= 1);
     }
@@ -64,11 +66,11 @@ public:
         vector1v.fromVertexes(vertexList[0], &v);
 
         numType a = baryDenom *
-                    (baryVec2.dotProd(baryVec2) * baryVec1.dotProd(vector1v)) -
-                    (baryVec1.dotProd(baryVec2) * baryVec1.dotProd(vector1v));
+                    (baryVec1.dotProd(baryVec1) * baryVec0.dotProd(vector1v)) -
+                    (baryVec0.dotProd(baryVec1) * baryVec0.dotProd(vector1v));
         numType b = baryDenom *
-                    (baryVec1.dotProd(baryVec1) * baryVec2.dotProd(vector1v)) -
-                    (baryVec1.dotProd(baryVec2) * baryVec1.dotProd(baryVec2));
+                    (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(vector1v)) -
+                    (baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVec1));
 
         if (a == 0) {
             return 0;
@@ -118,7 +120,7 @@ public:
             }
             std::cout << ",";
         }
-        std::cout << "}";
+        std::cout << "}" << "\n";
     }
 };
 

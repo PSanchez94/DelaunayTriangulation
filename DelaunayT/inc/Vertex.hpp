@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+
 template <class numType>
 struct Vertex {
     numType X;
