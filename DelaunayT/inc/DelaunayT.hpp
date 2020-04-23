@@ -4,7 +4,6 @@
 #ifndef DELAUNAYT_HPP
 #define DELAUNAYT_HPP
 
-#include <iostream>
 #include <vector>
 #include <limits>
 #include <algorithm>
@@ -53,12 +52,6 @@ public:
 
     void addPoint(Vertex<numType> *v) {
         for (auto t : allTriangles) {
-            std::cout << "Triangle address: " << &t << ". ";
-            t->print();
-            std::cout << "Point to add";
-            v->print();
-            std::cout << "\n";
-
             if (t->PointInside(v)) {
                 Triangle<numType>* ATriangle;
                 Triangle<numType>* BTriangle;
@@ -67,8 +60,6 @@ public:
                 Triangle<numType>* auxTri[3] = {t->triangleList[0], t->triangleList[1], t->triangleList[2]};
 
                 if (t->PointOnEdge(v) != -1) {
-                    std::cout << "SHOULD THIS BE ON EDGE?";
-
                     int i = t->PointOnEdge(v);
 
                     ATriangle = new Triangle<numType>(auxVer[i], auxVer[(i + 1) % 3], v);
@@ -103,8 +94,6 @@ public:
                         borderCheck(CTriangle, it2);
                     }
                 } else {
-                    std::cout << "Started Triangle Construction: ";
-
                     // Vertex definition
                     ATriangle = new Triangle<numType>(v, t->vertexList[0], t->vertexList[1]);
                     BTriangle = new Triangle<numType>(v, t->vertexList[1], t->vertexList[2]);
@@ -127,13 +116,6 @@ public:
                     t->triangleList[1] = ATriangle;
                     t->triangleList[2] = BTriangle;
                     auxTri[1] = t;
-
-                    std::cout << "Memory reeplacement; ";
-                    ATriangle->print();
-                    BTriangle->print();
-                    t->print();
-                    std::cout << "\n";
-                    std::cout << "This doesn't look like an issue";
                 }
 
                 t->calcBarycentric();
@@ -144,14 +126,7 @@ public:
                     borderCheck(BTriangle, it2);
                     borderCheck(t, it2);
                 }
-
-                v->print();
-                std::cout << " Vertex was added" << "\n";
-
                 break;
-            } else {
-                v->print();
-                std::cout << " Vertex not inside this triangle" << "\n";
             }
         }
     }
@@ -187,11 +162,6 @@ public:
         borderVertexVec.push_back(seVertex);
         borderVertexVec.push_back(neVertex);
         borderVertexVec.push_back(nwVertex);
-
-        for (auto i : borderVertexVec) {
-            i->print();
-            std::cout << "\n";
-        }
 
         Triangle<numType>* topTriangle = new Triangle<numType>(neVertex, nwVertex, swVertex);
         Triangle<numType>* botTriangle = new Triangle<numType>(swVertex, seVertex, neVertex);

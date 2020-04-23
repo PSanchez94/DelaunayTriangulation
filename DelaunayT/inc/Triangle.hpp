@@ -23,8 +23,6 @@ public:
         triangleList[1] = nullptr;
         triangleList[2] = nullptr;
 
-        std::cout << "Triangle Construction: ";
-        printVer();
         calcBarycentric();
     }
 
@@ -35,11 +33,6 @@ public:
         baryDenom = 1 /
                     (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(baryVec1) -
                      baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVec1));
-
-        std::cout << "baryVec0:";
-        baryVec0.print();
-        std::cout << ". baryVec1: ";
-        baryVec1.print(); std::cout << ". baryDenom: " <<baryDenom << "\n";
     }
 
     bool PointInside(Vertex<numType>* ver) {
@@ -49,11 +42,6 @@ public:
         baryVecV.fromVertexes(vertexList[0], ver);
 
         calcBarycentric();
-
-        std::cout << "Point vec construction:";
-        baryVec0.print();
-        baryVec1.print();
-        baryVecV.print(); std::cout << "\n";
 
         numType u = baryDenom *
                     (baryVec1.dotProd(baryVec1) * baryVec0.dotProd(baryVecV) -

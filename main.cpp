@@ -1,10 +1,15 @@
 #include <iostream>
 #include <GL/glut.h>
 #include <math.h>
+#include <cstdlib>
+#include <ctime>
 
 #include "DelaunayT.hpp"
 
 DelaunayT<float> aTriangulation;
+DelaunayT<int> aIntTriangulation;
+std::vector<std::vector<int> > intNumList;
+std::vector<std::vector<float> > numList;
 
 //std::vector<std::vector<float> > numList = std::vector<std::vector<float> >(
 //        {{-10.0f, 10.0f}, {0.0f, 9.0f}, {10.0f, 10.0f},
@@ -14,25 +19,20 @@ DelaunayT<float> aTriangulation;
 //         {-10.0f, -10.0f}, {0.0f, -9.0f}, {10.0f, -10.0f}}
 //);
 
-    std::vector<std::vector<float> > numList = std::vector<std::vector<float> >(
-            {{-1.0f, 1.0f}, {0.0f, 0.9f}, {1.0f, 1.0f},
-             {-0.5f, 0.5f}, {0.5f, 0.5f},
-             {-0.9f, 0.0f}, {0.0f, 0.0f}, {0.9f, 0.0f},
-             {-0.5f, -0.5f}, {0.5f, -0.5f},
-             {-1.0f, -1.0f}, {0.0f, -0.9f}, {1.0f, -1.0f}}
-            );
+//    std::vector<std::vector<float> > numList = std::vector<std::vector<float> >(
+//            {{-1.0f, 1.0f}, {0.0f, 0.9f}, {1.0f, 1.0f},
+//             {-0.5f, 0.5f}, {0.5f, 0.5f},
+//             {-0.9f, 0.0f}, {0.0f, 0.0f}, {0.9f, 0.0f},
+//             {-0.5f, -0.5f}, {0.5f, -0.5f},
+//             {-1.0f, -1.0f}, {0.0f, -0.9f}, {1.0f, -1.0f}}
+//            );
 
-void drawPoints( Vertex<float> *v, int r) {
+void drawPoints( Vertex<float> *v) {
 
-    float a[2] = {v->X, v->Y};
-
-    glBegin(GL_LINE_LOOP);
+    glPointSize(5.0f);
+    glBegin(GL_POINTS);
     glColor3f(1.0f, 0.0f, 0.0f); // Red
-    for (int i=0; i < 360; i++) {
-        double rad =  i * (M_PI / 180);
-        glVertex2f(a[0] + cos(rad)*r/5, a[1] + sin(rad)*r/5);
-        glVertex2f(a[0], a[1]);
-    }
+    glVertex2f(v->X, v->Y);
     glEnd();
 }
 
@@ -49,7 +49,7 @@ void drawTriangles(Triangle<float>* t) {
 
     // Points
     for (Vertex<float>* v : t->vertexList) {
-        drawPoints(v, v->X*0.01);
+        drawPoints(v);
     }
 }
 
@@ -61,7 +61,7 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT);         // Clear the color buffer
     glLoadIdentity();
 
-    for (Triangle<float>* t : aTriangulation.getTriangles() ) {
+    for (Triangle<float>* t : aTriangulation.getAllTriangles() ) {
         drawTriangles(t);
     }
 
@@ -78,11 +78,20 @@ void reshape(int w, int h) {
     float south = aTriangulation.getBorderVertexes()[0]->Y;
     float north = aTriangulation.getBorderVertexes()[2]->Y;
 
-    gluOrtho2D(west + west*0.05, east + east*0.05, south + south*0.05, north + north*0.05);
+    gluOrtho2D(-0.2f,1.2f,-0.2f,1.2f);
     glMatrixMode(GL_MODELVIEW);
 }
 
 int main(int argc, char** argv) {
+
+
+    //aIntTriangulation = DelaunayT<int>(intNumList);
+
+    for (int i = 0; i<100; i++) {
+        float x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        numList.push_back({x, y});
+    }
 
     aTriangulation = DelaunayT<float>(numList);
 
