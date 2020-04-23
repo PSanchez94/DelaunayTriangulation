@@ -54,6 +54,7 @@ public:
     void addPoint(Vertex<numType> v) {
         for (auto it : allTriangles) {
 
+            std::cout << "Triangle address: " << &it;
             it->print();
             std::cout << "Point to add";
             v.print();
@@ -107,22 +108,26 @@ public:
                     BTriangle = new Triangle<numType>(&v, it->vertexList[1], it->vertexList[2]);
                     CTriangle = new Triangle<numType>(&v, it->vertexList[2], it->vertexList[0]);
 
+                    std::cout << "A Triangle";
                     ATriangle->triangleList[0] = it->triangleList[2];
                     ATriangle->triangleList[1] = BTriangle;
                     ATriangle->triangleList[2] = CTriangle;
                     it->triangleList[2] = ATriangle;
 
+                    std::cout << "B Triangle";
                     BTriangle->triangleList[0] = it->triangleList[0];
                     BTriangle->triangleList[1] = CTriangle;
                     BTriangle->triangleList[2] = ATriangle;
                     it->triangleList[0] = BTriangle;
 
+                    std::cout << "C Triangle";
                     CTriangle->triangleList[0] = it->triangleList[1];
                     CTriangle->triangleList[1] = ATriangle;
                     CTriangle->triangleList[2] = BTriangle;
                     it->triangleList[1] = CTriangle;
 
                     triangleVec.erase(std::find(triangleVec.begin(), triangleVec.end(), it));
+                    std::cout << "Erase, this fucking fails";
                     allTriangles.push_back(ATriangle);
                     allTriangles.push_back(BTriangle);
                     allTriangles.push_back(CTriangle);
@@ -139,10 +144,10 @@ public:
                 }
 
                 v.print();
-                std::cout << " Vertex was inside bounding box" << "\n";
+                std::cout << " Vertex was added" << "\n";
             } else {
                 v.print();
-                std::cout << " Vertex not inside bounding box" << "\n";
+                std::cout << " Vertex not inside this triangle" << "\n";
 
             }
         }

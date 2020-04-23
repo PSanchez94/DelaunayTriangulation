@@ -30,53 +30,55 @@ public:
                     (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(baryVec1) -
                      baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVec1));
 
+
+
         std::cout << "Triangle Construction: baryVec0:";
         baryVec0.print();
         std::cout << ". baryVec1: ";
         baryVec1.print(); std::cout << ". baryDenom: " <<baryDenom << "\n";
     }
 
-    bool PointInside(Vertex<numType> v) {
+    bool PointInside(Vertex<numType> ver) {
 
         // Barycentric Coordinates Method
-        Vector<numType> vector1v;
-        vector1v.fromVertexes(vertexList[0], &v);
+        Vector<numType> baryVecV;
+        baryVecV.fromVertexes(vertexList[0], &ver);
 
         std::cout << "Point vec construction:";
-        baryVec0.print(); std::cout << "\n";
-        baryVec1.print(); std::cout << "\n";
-        vector1v.print(); std::cout << "\n";
+        baryVec0.print();
+        baryVec1.print();
+        baryVecV.print(); std::cout << "\n";
 
-        numType a = baryDenom *
-                    (baryVec1.dotProd(baryVec1) * baryVec0.dotProd(vector1v)) -
-                    (baryVec0.dotProd(baryVec1) * baryVec0.dotProd(vector1v));
-        numType b = baryDenom *
-                    (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(vector1v)) -
-                    (baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVec1));
+        numType u = baryDenom *
+                    (baryVec1.dotProd(baryVec1) * baryVec0.dotProd(baryVecV) -
+                    baryVec0.dotProd(baryVec1) * baryVec1.dotProd(baryVecV));
+        numType v = baryDenom *
+                    (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(baryVecV) -
+                    baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVecV));
 
-        //v.print();
-        //std::cout << a << b << "\n";
+        ver.print();
+        std::cout << " u: " << u << ", v:" << v << "u+v: " << u + v << "\n";
 
-        return (a >= 0) && (b >= 0) && (a + b <= 1);
+        return (u >= 0) && (v >= 0) && (u + v <= 1);
     }
 
-    int PointOnEdge(Vertex<numType> v) {
+    int PointOnEdge(Vertex<numType> ver) {
 
-        Vector<numType> vector1v;
-        vector1v.fromVertexes(vertexList[0], &v);
+        Vector<numType> baryVecV;
+        baryVecV.fromVertexes(vertexList[0], &ver);
 
-        numType a = baryDenom *
-                    (baryVec1.dotProd(baryVec1) * baryVec0.dotProd(vector1v)) -
-                    (baryVec0.dotProd(baryVec1) * baryVec0.dotProd(vector1v));
-        numType b = baryDenom *
-                    (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(vector1v)) -
-                    (baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVec1));
+        numType u = baryDenom *
+                    (baryVec1.dotProd(baryVec1) * baryVec0.dotProd(baryVecV) -
+                     baryVec0.dotProd(baryVec1) * baryVec1.dotProd(baryVecV));
+        numType v = baryDenom *
+                    (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(baryVecV) -
+                     baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVecV));
 
-        if (a == 0) {
+        if (u == 0) {
             return 0;
-        } else if (b == 0) {
+        } else if (v == 0) {
             return 1;
-        } else if (a + b == 1) {
+        } else if (u + v == 1) {
             return 2;
         } else {
             return -1;

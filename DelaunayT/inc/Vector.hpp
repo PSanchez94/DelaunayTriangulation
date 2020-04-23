@@ -17,12 +17,9 @@ struct Vector {
         X = u->X - v->X;
         Y = u->Y - v->Y;
 
-        numType length = sqrt((X * X) + (Y * Y));
-        X = X / length;
-        Y = Y / length;
-
-        std::cout << "after Sqrt: " << X  << ", "
-                  << Y  << "\n";
+//        numType length = sqrt((X * X) + (Y * Y));
+//        X = X / length;
+//        Y = Y / length;
     }
 
     bool operator==(Vector v) { return (X == v.X) && (Y == v.Y); }
