@@ -11,13 +11,13 @@ DelaunayT<int> aIntTriangulation;
 std::vector<std::vector<int> > intNumList;
 std::vector<std::vector<float> > numList;
 
-//std::vector<std::vector<float> > numList = std::vector<std::vector<float> >(
-//        {{-10.0f, 10.0f}, {0.0f, 9.0f}, {10.0f, 10.0f},
-//         {-5.0f, 5.0f}, {5.0f, 5.0f},
-//         {-9.0f, 0.0f}, {0.0f, 0.0f}, {9.0f, 0.0f},
-//         {-5.0f, -5.0f}, {5.0f, -5.0f},
-//         {-10.0f, -10.0f}, {0.0f, -9.0f}, {10.0f, -10.0f}}
-//);
+std::vector<std::vector<float> > numListSimple = std::vector<std::vector<float> >(
+        {{-10.0f, 10.0f}, {0.0f, 9.0f}, {10.0f, 10.0f},
+         {-5.0f, 5.0f}, {5.0f, 5.0f},
+         {-9.0f, 0.0f}, {0.0f, 0.0f}, {9.0f, 0.0f},
+         {-5.0f, -5.0f}, {5.0f, -5.0f},
+         {-10.0f, -10.0f}, {0.0f, -9.0f}, {10.0f, -10.0f}}
+);
 
 //    std::vector<std::vector<float> > numList = std::vector<std::vector<float> >(
 //            {{-1.0f, 1.0f}, {0.0f, 0.9f}, {1.0f, 1.0f},
@@ -78,14 +78,23 @@ void reshape(int w, int h) {
     float south = aTriangulation.getBorderVertexes()[0]->Y;
     float north = aTriangulation.getBorderVertexes()[2]->Y;
 
-    gluOrtho2D(-0.2f,1.2f,-0.2f,1.2f);
+    gluOrtho2D(1.05*west - 0.05,
+            1.05*east,
+            1.05*south - 0.05,
+            1.05*north);
     glMatrixMode(GL_MODELVIEW);
 }
 
 int main(int argc, char** argv) {
-
-
     //aIntTriangulation = DelaunayT<int>(intNumList);
+
+    std::srand(std::time(nullptr));
+
+//    for (float i = -2; i<3; i++) {
+//        for (float j = -2; j<3; j++) {
+//            numList.push_back({i, j});
+//        }
+//    }
 
     for (int i = 0; i<100; i++) {
         float x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -98,8 +107,8 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB);
 
-    glutInitWindowSize(1000, 1000);   // Set the window's initial width & height
-    glutInitWindowPosition(500, 500); // Position the window's initial top-left corner
+    glutInitWindowSize(800, 800);   // Set the window's initial width & height
+    glutInitWindowPosition(100, 100); // Position the window's initial top-left corner
     glutCreateWindow("OpenGL Setup Test"); // Create a window with the given title
 
     glutDisplayFunc(display); // Register display callback handler for window re-paint

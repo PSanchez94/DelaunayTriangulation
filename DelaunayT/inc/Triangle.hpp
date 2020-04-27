@@ -66,11 +66,11 @@ public:
                      baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVecV));
 
         if (u == 0) {
-            return 0;
+            return 2;
         } else if (v == 0) {
             return 1;
         } else if (u + v == 1) {
-            return 2;
+            return 0;
         } else {
             return -1;
         }

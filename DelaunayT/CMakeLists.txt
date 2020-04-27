@@ -9,9 +9,8 @@ set(Headers
         inc/Triangle.hpp
         inc/DelaunayT.hpp)
 
-set(Sources
-        src/Triangle.cpp)
-
 include_directories(${PROJECT_SOURCE_DIR}/inc)
 
-add_library(${PROJECT_NAME} SHARED ${Sources} ${Headers})
+add_library(${PROJECT_NAME} SHARED ${Headers})
+
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
