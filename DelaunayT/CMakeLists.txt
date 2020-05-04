@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(Headers
         inc/Vertex.hpp
         inc/Vector.hpp
+        inc/Geometries
         inc/Triangle.hpp
         inc/DelaunayT.hpp)
 
