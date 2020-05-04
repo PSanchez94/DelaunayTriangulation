@@ -10,6 +10,7 @@ DelaunayT<float> aTriangulation;
 DelaunayT<int> aIntTriangulation;
 std::vector<std::vector<int> > intNumList;
 std::vector<std::vector<float> > numList;
+std::vector<std::vector<float> > numListRect;
 
 std::vector<std::vector<float> > numListSimple = std::vector<std::vector<float> >(
         {{-10.0f, 10.0f}, {0.0f, 9.0f}, {10.0f, 10.0f},
@@ -90,11 +91,11 @@ int main(int argc, char** argv) {
 
     std::srand(std::time(nullptr));
 
-//    for (float i = -2; i<3; i++) {
-//        for (float j = -2; j<3; j++) {
-//            numList.push_back({i, j});
-//        }
-//    }
+    for (float i = -5; i<6; i++) {
+        for (float j = -5; j<6; j++) {
+            numListRect.push_back({i, j});
+        }
+    }
 
     for (int i = 0; i<100; i++) {
         float x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -102,7 +103,7 @@ int main(int argc, char** argv) {
         numList.push_back({x, y});
     }
 
-    aTriangulation = DelaunayT<float>(numList);
+    aTriangulation = DelaunayT<float>(numListRect);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB);

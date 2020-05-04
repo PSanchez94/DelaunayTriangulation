@@ -43,128 +43,134 @@ public:
             addPoint(v);
         }
 
+
         std::cout << "Done building. " << "\n" << "Triangles Created: ";
         std::cout << allTriangles.size() << "\n";
         std::cout << "Draw Triangles: " << triangleVec.size() << "\n";
         std::cout << "Border Triangles: " << boundingTriangles.size() << "\n";
+
+
     }
 
     void addPoint(Vertex<numType> *v) {
         for (Triangle<numType>* t : allTriangles) {
             if (t->PointInside(v)) {
-                Triangle<numType>* ATriangle;
-                Triangle<numType>* BTriangle;
-
-                Vertex<numType>* auxVer[3];
-                Triangle<numType>* auxTri[3];
-
-                std::cout << auxTri[0];
                 if (t->PointOnEdge(v) != -1) {
-                    int i = t->PointOnEdge(v);
 
-                    auxVer[i] = t->vertexList[i];
-                    auxVer[(i + 1) % 3] = t->vertexList[(i + 1) % 3];
-                    auxVer[(i + 2) % 3] = t->vertexList[(i + 2) % 3];
 
-                    auxTri[i] = t->triangleList[i];
-                    auxTri[(i + 1) % 3] = t->triangleList[(i + 1) % 3];
-                    auxTri[(i + 2) % 3] = t->triangleList[(i + 2) % 3];
+                    std::cout << "Before Update Point added as edge:";
+                    v->print();
+                    std::cout << "\n" << "Triangle:";
+                    t->print();
+                    std::cout << "\n";
 
-                    ATriangle = new Triangle<numType>(auxVer[i], auxVer[(i + 1) % 3], v);
-                    t->vertexList[0] = auxVer[i];
-                    t->vertexList[1] = v;
-                    t->vertexList[2] = auxVer[(i + 2) % 3];
 
-                    ATriangle->triangleList[1] = t;
-                    ATriangle->triangleList[2] = auxTri[2];
+                    updateByPointOnEdge(t, v, t->PointOnEdge(v));
 
-                    t->triangleList[1] = auxTri[1];
-                    t->triangleList[2] = ATriangle;
-
-                    if (auxTri[0] != 0) {
-                        BTriangle = new Triangle<numType>(
-                                auxTri[0]->vertexList[i],
-                                v,
-                                auxTri[0]->vertexList[(i + 2) % 3]);
-                        Triangle<numType>* CTriangle = new Triangle<numType>(
-                                auxTri[0]->vertexList[i],
-                                auxTri[0]->vertexList[(i + 1) % 3],
-                                v);
-
-                        ATriangle->triangleList[0] = BTriangle;
-
-                        t->triangleList[0] = CTriangle;
-                        std::cout << auxTri[0];
-
-                        BTriangle->triangleList[0] = ATriangle;
-                        BTriangle->triangleList[1] = auxTri[0]->triangleList[(i + 1) % 3];
-                        BTriangle->triangleList[2] = CTriangle;
-
-                        CTriangle->triangleList[0] = t;
-                        CTriangle->triangleList[1] = BTriangle;
-                        CTriangle->triangleList[2] = auxTri[0]->triangleList[(i + 2) % 3];
-
-                        allTriangles.push_back(BTriangle);
-                        allTriangles.push_back(CTriangle);
-                        //borderCheck(BTriangle);
-                        //borderCheck(CTriangle)
-                    }
 
                     std::cout << "Point added as edge:";
                     v->print();
                     std::cout << "\n" << "To triangle:";
                     t->print();
                     std::cout << "\n";
+
+
                 } else {
-                    auxVer[0] = t->vertexList[0];
-                    auxVer[1] = t->vertexList[1];
-                    auxVer[2] = t->vertexList[2];
-
-                    auxTri[0] = t->triangleList[0];
-                    auxTri[1] = t->triangleList[1];
-                    auxTri[2] = t->triangleList[2];
-
-                    // Vertex definition
-                    ATriangle = new Triangle<numType>(v, auxVer[0], auxVer[1]);
-                    BTriangle = new Triangle<numType>(v, auxVer[1], auxVer[2]);
-                    t->vertexList[0] = v;
-                    t->vertexList[1] = auxVer[2];
-                    t->vertexList[2] = auxVer[0];
-
-                    // Neighbour definition
-                    ATriangle->triangleList[0] = auxTri[2];
-                    ATriangle->triangleList[1] = BTriangle;
-                    ATriangle->triangleList[2] = t;
-                    if (auxTri[2] != 0) {
-                        auxTri[2]->triangleList[2] = BTriangle;
-                    }
-
-                    BTriangle->triangleList[0] = auxTri[0];
-                    BTriangle->triangleList[1] = t;
-                    BTriangle->triangleList[2] = ATriangle;
-                    if (auxTri[0] != 0) {
-                        auxTri[0]->triangleList[0] = BTriangle;
-                    }
-
-                    t->triangleList[0] = auxTri[1];
-                    t->triangleList[1] = ATriangle;
-                    t->triangleList[2] = BTriangle;
-                    if (auxTri[1] != 0) {
-                        auxTri[1]->triangleList[1] = BTriangle;
-                    }
-
-                    allTriangles.push_back(BTriangle);
-                    //borderCheck(BTriangle);
+                    updateByPointInside(t, v);
                 }
 
                 t->calcBarycentric();
-                allTriangles.push_back(ATriangle);
-                //borderCheck(ATriangle);
-                //borderCheck(t);
-
                 break;
             }
         }
+    }
+
+    void updateByPointInside(Triangle<numType>* t, Vertex<numType>* v) {
+
+        Vertex<numType>* auxVer[3];
+        Triangle<numType>* auxTri[3];
+
+        auxVer[0] = t->vertexList[0];
+        auxVer[1] = t->vertexList[1];
+        auxVer[2] = t->vertexList[2];
+
+        auxTri[0] = t->triangleList[0];
+        auxTri[1] = t->triangleList[1];
+        auxTri[2] = t->triangleList[2];
+
+        // Vertex definition
+        Triangle<numType>* ATriangle = new Triangle<numType>(v, auxVer[0], auxVer[1]);
+        Triangle<numType>* BTriangle = new Triangle<numType>(v, auxVer[1], auxVer[2]);
+        t->vertexList[0] = v;
+        t->vertexList[1] = auxVer[2];
+        t->vertexList[2] = auxVer[0];
+
+        // Neighbour definition
+        ATriangle->triangleList[0] = auxTri[2];
+        ATriangle->triangleList[1] = BTriangle;
+        ATriangle->triangleList[2] = t;
+        if (auxTri[2] != 0) {
+            auxTri[2]->triangleList[2] = BTriangle;
+        }
+
+        BTriangle->triangleList[0] = auxTri[0];
+        BTriangle->triangleList[1] = t;
+        BTriangle->triangleList[2] = ATriangle;
+        if (auxTri[0] != 0) {
+            auxTri[0]->triangleList[0] = BTriangle;
+        }
+
+        t->triangleList[0] = auxTri[1];
+        t->triangleList[1] = ATriangle;
+        t->triangleList[2] = BTriangle;
+        if (auxTri[1] != 0) {
+            auxTri[1]->triangleList[1] = BTriangle;
+        }
+
+        allTriangles.push_back(ATriangle);
+        allTriangles.push_back(BTriangle);
+    }
+
+    void updateByPointOnEdge(Triangle<numType>* t, Vertex<numType>* v, int i) {
+
+        Triangle<numType>* ATriangle = new Triangle<numType>();
+        ATriangle->vertexList[i] = t->vertexList[i];
+        ATriangle->vertexList[(i + 1) % 3] = v;
+        ATriangle->vertexList[(i + 2) % 3] = t->vertexList[(i + 2) % 3];
+        t->vertexList[(i + 2) % 3] = v;
+
+        ATriangle->triangleList[(i + 1) % 3] = t->triangleList[(i + 1) % 3];
+        ATriangle->triangleList[(i + 2) % 3] = t;
+        if (t->triangleList[(i + 1) % 3] != 0) {
+            t->triangleList[(i + 1) % 3]->triangleList[(i + 1) % 3] = ATriangle;
+        }
+        t->triangleList[(i + 1) % 3] = ATriangle;
+
+        if (t->triangleList[i] != 0) {
+            Triangle<numType>* u = t->triangleList[i];
+            Triangle<numType>* BTriangle = new Triangle<numType>();
+
+            BTriangle->vertexList[i] = u->vertexList[i];
+            BTriangle->vertexList[(i + 1) % 3] = u->vertexList[(i + 1) % 3];
+            BTriangle->vertexList[(i + 2) % 3] = v;
+            u->vertexList[(i + 1) % 3] = v;
+
+            BTriangle->triangleList[i] = ATriangle;
+            BTriangle->triangleList[(i + 1) % 3] = u;
+            BTriangle->triangleList[(i + 2) % 3] = u->triangleList[(i + 2) % 3];
+            if (u->triangleList[(i + 2) % 3] != 0) {
+                u->triangleList[(i + 2) % 3]->triangleList[(i + 2) % 3] = BTriangle;
+            }
+            u->triangleList[(i + 2) % 3] = BTriangle;
+
+            ATriangle->triangleList[i] = BTriangle;
+
+            allTriangles.push_back(BTriangle);
+
+            u->calcBarycentric();
+        }
+
+        allTriangles.push_back(ATriangle);
     }
 
     void findBoundingTriangles(std::vector<std::vector<numType>> input) {
@@ -217,7 +223,7 @@ public:
 //                triangleVec.push_back(t);
 //            }
 //        }
-//    }
+//
 
     std::vector<Vertex<numType> *> getBorderVertexes() {
         return borderVertexVec;
