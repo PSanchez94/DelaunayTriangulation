@@ -58,38 +58,38 @@ public:
                 if (t->PointOnEdge(v) != -1) {
 
 
-                    std::cout << "Before Update Point added as edge:";
-                    v->print();
-                    std::cout << "\n" << "Triangle:";
-                    t->print();
-                    std::cout << "\n";
+                    //std::cout << "Before Update Point added as edge:";
+                    //v->print();
+                    //std::cout << "\n" << "Triangle:";
+                    //t->print();
+                    //std::cout << "\n";
 
 
                     updateByPointOnEdge(t, v, t->PointOnEdge(v));
 
 
-                    std::cout << "Point added as edge:";
-                    v->print();
-                    std::cout << "\n" << "To triangle:";
-                    t->print();
-                    std::cout << "\n";
+                    //std::cout << "Point added as edge:";
+                    //v->print();
+                    //std::cout << "\n" << "To triangle:";
+                    //t->print();
+                    //std::cout << "\n";
 
 
                 } else {
 
-                    std::cout << "Before Update Point inside:";
-                    v->print();
-                    std::cout << "\n" << "Triangle:";
-                    t->print();
-                    std::cout << "\n";
+                    //std::cout << "Before Update Point inside:";
+                    //v->print();
+                    //std::cout << "\n" << "Triangle:";
+                    //t->print();
+                    //std::cout << "\n";
 
                     updateByPointInside(t, v);
 
-                    std::cout << "Point inside added:";
-                    v->print();
-                    std::cout << "\n" << "To triangle:";
-                    t->print();
-                    std::cout << "\n";
+                    //std::cout << "Point inside added:";
+                    //v->print();
+                    //std::cout << "\n" << "To triangle:";
+                    //t->print();
+                    //std::cout << "\n";
                 }
 
                 t->calcBarycentric();
