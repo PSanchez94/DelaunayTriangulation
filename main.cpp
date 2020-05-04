@@ -91,8 +91,8 @@ int main(int argc, char** argv) {
 
     std::srand(std::time(nullptr));
 
-    for (float i = -5; i<6; i++) {
-        for (float j = -5; j<6; j++) {
+    for (float i = -1; i<2; i++) {
+        for (float j = -1; j<2; j++) {
             numListRect.push_back({i, j});
         }
     }
@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
         numList.push_back({x, y});
     }
 
-    aTriangulation = DelaunayT<float>(numListRect);
+    aTriangulation = DelaunayT<float>(numList);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB);

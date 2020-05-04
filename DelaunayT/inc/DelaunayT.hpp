@@ -76,7 +76,20 @@ public:
 
 
                 } else {
+
+                    std::cout << "Before Update Point inside:";
+                    v->print();
+                    std::cout << "\n" << "Triangle:";
+                    t->print();
+                    std::cout << "\n";
+
                     updateByPointInside(t, v);
+
+                    std::cout << "Point inside added:";
+                    v->print();
+                    std::cout << "\n" << "To triangle:";
+                    t->print();
+                    std::cout << "\n";
                 }
 
                 t->calcBarycentric();
@@ -87,45 +100,35 @@ public:
 
     void updateByPointInside(Triangle<numType>* t, Vertex<numType>* v) {
 
-        Vertex<numType>* auxVer[3];
-        Triangle<numType>* auxTri[3];
-
-        auxVer[0] = t->vertexList[0];
-        auxVer[1] = t->vertexList[1];
-        auxVer[2] = t->vertexList[2];
-
-        auxTri[0] = t->triangleList[0];
-        auxTri[1] = t->triangleList[1];
-        auxTri[2] = t->triangleList[2];
-
         // Vertex definition
-        Triangle<numType>* ATriangle = new Triangle<numType>(v, auxVer[0], auxVer[1]);
-        Triangle<numType>* BTriangle = new Triangle<numType>(v, auxVer[1], auxVer[2]);
-        t->vertexList[0] = v;
-        t->vertexList[1] = auxVer[2];
-        t->vertexList[2] = auxVer[0];
+        Triangle<numType>* ATriangle = new Triangle<numType>(v, t->vertexList[1], t->vertexList[2]);
+        Triangle<numType>* BTriangle = new Triangle<numType>(t->vertexList[0], v, t->vertexList[2]);
+        t->vertexList[2] = v;
 
         // Neighbour definition
-        ATriangle->triangleList[0] = auxTri[2];
+        ATriangle->triangleList[0] = t->triangleList[0];
         ATriangle->triangleList[1] = BTriangle;
         ATriangle->triangleList[2] = t;
-        if (auxTri[2] != 0) {
-            auxTri[2]->triangleList[2] = BTriangle;
+        if (t->triangleList[0] != 0) {
+            for (int j = 0; j < 3; j++) {
+                if (t->triangleList[0]->triangleList[j] == t) {
+                    t->triangleList[0]->triangleList[j] = ATriangle;
+                }
+            }
         }
+        t->triangleList[0] = ATriangle;
 
-        BTriangle->triangleList[0] = auxTri[0];
-        BTriangle->triangleList[1] = t;
-        BTriangle->triangleList[2] = ATriangle;
-        if (auxTri[0] != 0) {
-            auxTri[0]->triangleList[0] = BTriangle;
+        BTriangle->triangleList[0] = ATriangle;
+        BTriangle->triangleList[1] = t->triangleList[1];
+        BTriangle->triangleList[2] = t;
+        if (t->triangleList[1] != 0) {
+            for (int j = 0; j < 3; j++) {
+                if (t->triangleList[1]->triangleList[j] == t) {
+                    t->triangleList[1]->triangleList[j] = BTriangle;
+                }
+            }
         }
-
-        t->triangleList[0] = auxTri[1];
-        t->triangleList[1] = ATriangle;
-        t->triangleList[2] = BTriangle;
-        if (auxTri[1] != 0) {
-            auxTri[1]->triangleList[1] = BTriangle;
-        }
+        t->triangleList[1] = BTriangle;
 
         allTriangles.push_back(ATriangle);
         allTriangles.push_back(BTriangle);
@@ -142,14 +145,17 @@ public:
         ATriangle->triangleList[(i + 1) % 3] = t->triangleList[(i + 1) % 3];
         ATriangle->triangleList[(i + 2) % 3] = t;
         if (t->triangleList[(i + 1) % 3] != 0) {
-            t->triangleList[(i + 1) % 3]->triangleList[(i + 1) % 3] = ATriangle;
+            for (int j = 0; j < 3; j++) {
+                if (t->triangleList[(i + 1) % 3]->triangleList[j] == t) {
+                    t->triangleList[(i + 1) % 3]->triangleList[j] = ATriangle;
+                }
+            }
         }
         t->triangleList[(i + 1) % 3] = ATriangle;
 
         if (t->triangleList[i] != 0) {
             Triangle<numType>* u = t->triangleList[i];
             Triangle<numType>* BTriangle = new Triangle<numType>();
-
             BTriangle->vertexList[i] = u->vertexList[i];
             BTriangle->vertexList[(i + 1) % 3] = u->vertexList[(i + 1) % 3];
             BTriangle->vertexList[(i + 2) % 3] = v;
@@ -159,7 +165,11 @@ public:
             BTriangle->triangleList[(i + 1) % 3] = u;
             BTriangle->triangleList[(i + 2) % 3] = u->triangleList[(i + 2) % 3];
             if (u->triangleList[(i + 2) % 3] != 0) {
-                u->triangleList[(i + 2) % 3]->triangleList[(i + 2) % 3] = BTriangle;
+                for (int j = 0; j < 3; j++) {
+                    if (u->triangleList[(i + 2) % 3]->triangleList[j] == t) {
+                        u->triangleList[(i + 2) % 3]->triangleList[j] = BTriangle;
+                    }
+                }
             }
             u->triangleList[(i + 2) % 3] = BTriangle;
 
