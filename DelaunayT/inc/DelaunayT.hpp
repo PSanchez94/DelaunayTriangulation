@@ -99,7 +99,6 @@ public:
     }
 
     void updateByPointInside(Triangle<numType>* t, Vertex<numType>* v) {
-
         // Vertex definition
         Triangle<numType>* ATriangle = new Triangle<numType>(v, t->vertexList[1], t->vertexList[2]);
         Triangle<numType>* BTriangle = new Triangle<numType>(t->vertexList[0], v, t->vertexList[2]);
@@ -234,6 +233,29 @@ public:
 //            }
 //        }
 //
+
+    void flipEdge(Triangle<numType>* t, Triangle<numType>* u) {
+        int i;
+        int j;
+
+        for (int k = 0; k < 3; k++) {
+            if (t->triangleList[k] == t) {
+                i = k;
+            } else if (u->triangleList[k] == u) {
+                j = k;
+            }
+        }
+
+        t->vertexList[(i + 2) % 3] = u->vertexList[j];
+        u->vertexList[(j + 2) % 3] = t->vertexList[i];
+
+        Triangle<numType>* tAux = t->triangleList[(i + 1) % 3];
+
+        t->triangleList[i] = u->triangleList[(j + 1) % 3];
+        t->triangleList[(i + 1) % 3] = u;
+        u->triangleList[j] = tAux;
+        u->triangleList[j] = t;
+    }
 
     std::vector<Vertex<numType> *> getBorderVertexes() {
         return borderVertexVec;

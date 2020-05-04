@@ -9,7 +9,7 @@
 #include "Vertex.hpp"
 
 template<class numType>
-float InCircle(Vertex<numType>* a,
+numType InCircle(Vertex<numType>* a,
         Vertex<numType>* b,
         Vertex<numType>* c,
         Vertex<numType>* d){
@@ -25,12 +25,12 @@ float InCircle(Vertex<numType>* a,
             m[1][i] = vList[i]->Y - d->Y;
             m[2][i] = pow((vList[i]->X - d->X)) + pow((vList[i]->Y - d->Y));
         }
-        return determinant(m, 3);
+        return determinant(m);
     }
 }
 
 template<class numType>
-float determinant( numType m[3][3], int n) {
+numType determinant( numType m[3][3]) {
     numType det = 0;
     numType subm[2][2];
 
