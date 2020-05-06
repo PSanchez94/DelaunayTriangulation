@@ -9,27 +9,6 @@
 #include "Vertex.hpp"
 
 template<class numType>
-numType InCircle(Vertex<numType>* a,
-        Vertex<numType>* b,
-        Vertex<numType>* c,
-        Vertex<numType>* d){
-
-    if (d == 0) {
-        return -1.0;
-    } else {
-        numType m[3][3];
-        Vertex<numType>* vList[3] = {a, b, c};
-
-        for (int i = 0; i < 3; i++) {
-            m[0][i] = vList[i]->X - d->X;
-            m[1][i] = vList[i]->Y - d->Y;
-            m[2][i] = pow((vList[i]->X - d->X)) + pow((vList[i]->Y - d->Y));
-        }
-        return determinant(m);
-    }
-}
-
-template<class numType>
 numType determinant( numType m[3][3]) {
     numType det = 0;
     numType subm[2][2];
@@ -47,7 +26,26 @@ numType determinant( numType m[3][3]) {
             subi++;
         }
         det = det + (pow(-1, x) * m[0][x] *
-                (subm[0][0] * subm[1][1]) - (subm[1][0] * subm[0][1]));
+                     (subm[0][0] * subm[1][1]) - (subm[1][0] * subm[0][1]));
+    }
+    return det;
+}
+
+template<class numType>
+numType InCircle(Triangle<numType>* t, Vertex<numType>* d){
+
+    if (d == 0) {
+        return -1.0;
+    } else {
+        numType m[3][3];
+        Vertex<numType>* vList[3] = {t->vList[0], t->vList[2], t->vList[2]};
+
+        for (int i = 0; i < 3; i++) {
+            m[i][0] = vList[i]->X - d->X;
+            m[i][1] = vList[i]->Y - d->Y;
+            m[i][2] = pow((vList[i]->X - d->X), 2) + pow((vList[i]->Y - d->Y), 2);
+        }
+        return determinant(m);
     }
 }
 

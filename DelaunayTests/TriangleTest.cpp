@@ -21,23 +21,23 @@ protected:
 };
 
 TEST_F(TriangleTest, VertexPointed) {
-    ASSERT_EQ(testTriangle.vertexList[0], &v1);
+    ASSERT_EQ(testTriangle.vList[0], &v1);
 
-    ASSERT_EQ(testTriangle.vertexList[1], &v2);
+    ASSERT_EQ(testTriangle.vList[1], &v2);
 
-    ASSERT_EQ(testTriangle.vertexList[2], &v3);
+    ASSERT_EQ(testTriangle.vList[2], &v3);
 }
 
 TEST_F(TriangleTest, XValuesAccess) {
-    ASSERT_EQ(testTriangle.vertexList[0]->X, v1.X);
-    ASSERT_EQ(testTriangle.vertexList[1]->X, v2.X);
-    ASSERT_EQ(testTriangle.vertexList[2]->X, v3.X);
+    ASSERT_EQ(testTriangle.vList[0]->X, v1.X);
+    ASSERT_EQ(testTriangle.vList[1]->X, v2.X);
+    ASSERT_EQ(testTriangle.vList[2]->X, v3.X);
 }
 
 TEST_F(TriangleTest, YValuesAccess) {
-    ASSERT_EQ(testTriangle.vertexList[0]->Y, v1.Y);
-    ASSERT_EQ(testTriangle.vertexList[1]->Y, v2.Y);
-    ASSERT_EQ(testTriangle.vertexList[2]->Y, v3.Y);
+    ASSERT_EQ(testTriangle.vList[0]->Y, v1.Y);
+    ASSERT_EQ(testTriangle.vList[1]->Y, v2.Y);
+    ASSERT_EQ(testTriangle.vList[2]->Y, v3.Y);
 }
 
 TEST_F(TriangleTest, PointInside) {

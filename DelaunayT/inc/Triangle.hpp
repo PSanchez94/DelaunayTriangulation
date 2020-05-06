@@ -6,8 +6,9 @@
 template<class numType>
 class Triangle {
 public:
-    Vertex<numType>* vertexList[3];
-    Triangle<numType>* triangleList[3];
+    Vertex<numType>* vList[3];
+    Triangle<numType>* tList[3];
+    int indexOppT[3];
 
     Vector<numType> baryVec0;
     Vector<numType> baryVec1;
@@ -15,21 +16,21 @@ public:
 
     Triangle() { }
     Triangle(Vertex<numType> *v0, Vertex<numType> *v1, Vertex<numType> *v2) {
-        vertexList[0] = v0;
-        vertexList[1] = v1;
-        vertexList[2] = v2;
+        vList[0] = v0;
+        vList[1] = v1;
+        vList[2] = v2;
 
-        triangleList[0] = nullptr;
-        triangleList[1] = nullptr;
-        triangleList[2] = nullptr;
+        tList[0] = nullptr;
+        tList[1] = nullptr;
+        tList[2] = nullptr;
 
         calcBarycentric();
     }
 
     void calcBarycentric() {
         // Barycentric Coordinates
-        baryVec0.fromVertexes(vertexList[0], vertexList[2]);
-        baryVec1.fromVertexes(vertexList[0], vertexList[1]);
+        baryVec0.fromVertexes(vList[0], vList[2]);
+        baryVec1.fromVertexes(vList[0], vList[1]);
         baryDenom = 1 /
                     (baryVec0.dotProd(baryVec0) * baryVec1.dotProd(baryVec1) -
                      baryVec0.dotProd(baryVec1) * baryVec0.dotProd(baryVec1));
@@ -39,7 +40,7 @@ public:
 
         // Barycentric Coordinates Method
         Vector<numType> baryVecV;
-        baryVecV.fromVertexes(vertexList[0], ver);
+        baryVecV.fromVertexes(vList[0], ver);
 
         calcBarycentric();
 
@@ -56,7 +57,7 @@ public:
     int PointOnEdge(Vertex<numType>* ver) {
 
         Vector<numType> baryVecV;
-        baryVecV.fromVertexes(vertexList[0], ver);
+        baryVecV.fromVertexes(vList[0], ver);
 
         numType u = baryDenom *
                     (baryVec1.dotProd(baryVec1) * baryVec0.dotProd(baryVecV) -
@@ -77,14 +78,14 @@ public:
     }
 
     bool containsVertex(Vertex<numType> v ) {
-        for (Vertex<numType>* u : vertexList){
+        for (Vertex<numType>* u : vList){
             return *u == v;
         }
         return false;
     }
 
     bool operator==(Triangle t) {
-        for (Vertex<numType>* v : vertexList) {
+        for (Vertex<numType>* v : vList) {
             return !t.containsVertex(v);
         }
         return false;
@@ -98,7 +99,7 @@ public:
 
     void printVer() {
         std::cout << "Ver:";
-        for (auto i : vertexList) {
+        for (auto i : vList) {
             std::cout << i;
             i->print();
         }
@@ -107,7 +108,7 @@ public:
     void printNeigh() {
         std::cout << "Neigh:";
         std::cout << "{";
-        for (auto i : triangleList) {
+        for (auto i : tList) {
             if (i != nullptr) {
                 i->printVer();
             }

@@ -43,13 +43,13 @@ void drawTriangles(Triangle<float>* t) {
     glBegin(GL_LINE_LOOP);
     glColor3f(1.0f, 1.0f, 1.0f); // White
 
-    for (Vertex<float>* v : t->vertexList) {
+    for (Vertex<float>* v : t->vList) {
         glVertex2f(v->X, v->Y);
     }
     glEnd();
 
     // Points
-    for (Vertex<float>* v : t->vertexList) {
+    for (Vertex<float>* v : t->vList) {
         drawPoints(v);
     }
 }
@@ -91,8 +91,8 @@ int main(int argc, char** argv) {
 
     std::srand(std::time(nullptr));
 
-    for (float i = -5; i<6; i++) {
-        for (float j = -5; j<6; j++) {
+    for (float i = -1; i<2; i++) {
+        for (float j = -1; j<2; j++) {
             numListRect.push_back({i, j});
         }
     }
