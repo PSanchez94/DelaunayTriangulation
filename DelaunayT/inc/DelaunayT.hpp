@@ -106,8 +106,6 @@ public:
         Triangle<numType>* BT = new Triangle<numType>(t->vList[0], v, t->vList[2]);
         t->vList[2] = v;
 
-
-
         // ATriangle neighbours
         if (t->tList[0] != 0) {
             AT->tList[0] = t->tList[0];
@@ -182,7 +180,7 @@ public:
             AT->tList[0] = BT;
             AT->indexOppT[0] = 0;
 
-            legalizeEdge(u, (j+2) %3);
+            legalizeEdge(u, (j+1) %3);
             legalizeEdge(BT, 2);
             allTVec.push_back(BT);
 
@@ -251,11 +249,15 @@ public:
     void legalizeEdge(Triangle<numType>* t, int i) {
         if (t->tList[i] != 0) {
             if (InCircle(t, t->tList[i]->vList[t->indexOppT[i]]) > 0) {
-                std::cout << "Point inside inside:";
-                std::cout << "\n" << "To triangle:";
+                std::cout << "Edge flipped inside:";
+                std::cout << "\n" << i << "To triangle:";
                 t->print();
                 std::cout << "\n";
                 flipEdge(t, i);
+                std::cout << "After Edge flipped inside:";
+                std::cout << "\n" << i << "To triangle:";
+                t->print();
+                std::cout << "\n";
             }
         }
     }
@@ -274,6 +276,8 @@ public:
             u->indexOppT[j] = t->indexOppT[(i+1) %3];
             u->tList[j]->tList[u->indexOppT[j]] = u;
             u->tList[j]->indexOppT[u->indexOppT[j]] = j;
+        } else {
+            u->tList[j] = 0;
         }
 
         if (u->tList[(j+1) %3] != 0) {
@@ -281,12 +285,14 @@ public:
             t->indexOppT[i] = u->indexOppT[(j+1) %3];
             t->tList[i]->tList[t->indexOppT[i]] = t;
             t->tList[i]->indexOppT[t->indexOppT[i]] = i;
+        } else {
+            t->tList[i] = 0;
         }
 
         t->tList[(i+1) %3] = u;
-        t->indexOppT[(i+1) %3] = 1;
+        t->indexOppT[(i+1) %3] = (j+1) %3;
         u->tList[(j+1) %3] = t;
-        u->indexOppT[(j+1) %3] = 1;
+        u->indexOppT[(j+1) %3] = (i+1) %3;
     }
 
     std::vector<Vertex<numType> *> getBorderVertexes() {

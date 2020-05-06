@@ -25,8 +25,7 @@ numType determinant( numType m[3][3]) {
             }
             subi++;
         }
-        det = det + (pow(-1, x) * m[0][x] *
-                     (subm[0][0] * subm[1][1]) - (subm[1][0] * subm[0][1]));
+        det = (pow(-1, x) * m[0][x] * (subm[0][0] * subm[1][1]) - (subm[1][0] * subm[0][1]));
     }
     return det;
 }
@@ -38,7 +37,7 @@ numType InCircle(Triangle<numType>* t, Vertex<numType>* d){
         return -1.0;
     } else {
         numType m[3][3];
-        Vertex<numType>* vList[3] = {t->vList[0], t->vList[2], t->vList[2]};
+        Vertex<numType>* vList[3] = {t->vList[0], t->vList[1], t->vList[2]};
 
         for (int i = 0; i < 3; i++) {
             m[i][0] = vList[i]->X - d->X;

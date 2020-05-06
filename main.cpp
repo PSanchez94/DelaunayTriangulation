@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    for (int i = 0; i<100; i++) {
+    for (int i = 0; i<10; i++) {
         float x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         float y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         numList.push_back({x, y});
