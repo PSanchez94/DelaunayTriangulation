@@ -24,9 +24,9 @@ public:
         tList[1] = nullptr;
         tList[2] = nullptr;
 
-        //indexOppT[3];
-        //indexOppT[3]
-        //indexOppT[3]
+        indexOppT[0] = -1;
+        indexOppT[1] = -1;
+        indexOppT[2] = -1;
 
         calcBarycentric();
     }
@@ -113,9 +113,12 @@ public:
         std::cout << "Neigh:";
         std::cout << "{";
         for (int i = 0; i < 3; i++) {
+            std::cout << tList[i];
+            std::cout << indexOppT[i];
             if (tList[i] != 0) {
-                std::cout << indexOppT[i];
+
                 tList[i]->printVer();
+                std::cout << "" << tList[i]->indexOppT[indexOppT[i]];
             }
             std::cout << ",";
         }

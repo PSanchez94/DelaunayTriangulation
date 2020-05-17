@@ -15,7 +15,7 @@ struct Vertex {
     bool operator==(Vertex v) { return (X == v.X) && (Y == v.Y); }
 
     void print() {
-        std::cout << "(" << X << ", " << Y << ")";
+        std::cout << "(" << X << ", " << Y << ")" << " ";
     }
 };
 

@@ -59,38 +59,38 @@ public:
                 if (t->PointOnEdge(v) != -1) {
 
 
-                    std::cout << "Before Update Point added as edge:";
-                    v->print();
-                    std::cout << "\n" << "Triangle:";
-                    t->print();
-                    std::cout << "\n";
+                    //std::cout << "Before Update Point added as edge:";
+                    //v->print();
+                    //std::cout << "\n" << "Triangle:";
+                    //t->print();
+                    //std::cout << "\n";
 
 
                     updateByPointOnEdge(t, v, t->PointOnEdge(v));
 
 
-                    std::cout << "Point added as edge:";
-                    v->print();
-                    std::cout << "\n" << "To triangle:";
-                    t->print();
-                    std::cout << "\n";
+                    //std::cout << "Point added as edge:";
+                    //v->print();
+                    //std::cout << "\n" << "To triangle:";
+                    //t->print();
+                    //std::cout << "\n";
 
 
                 } else {
 
-                    std::cout << "Before Update Point inside:";
-                    v->print();
-                    std::cout << "\n" << "Triangle:";
-                    t->print();
-                    std::cout << "\n";
+                    //std::cout << "Before Update Point inside:";
+                    //v->print();
+                    //std::cout << "\n" << "Triangle:";
+                    //t->print();
+                    //std::cout << "\n";
 
                     updateByPointInside(t, v);
 
-                    std::cout << "Point inside added:";
-                    v->print();
-                    std::cout << "\n" << "To triangle:";
-                    t->print();
-                    std::cout << "\n";
+                    //std::cout << "Point inside added:";
+                    //v->print();
+                    //std::cout << "\n" << "To triangle:";
+                    //t->print();
+                    //std::cout << "\n";
                 }
 
                 t->calcBarycentric();
@@ -111,6 +111,7 @@ public:
             AT->tList[0] = t->tList[0];
             AT->indexOppT[0] = t->indexOppT[0];
             AT->tList[0]->tList[AT->indexOppT[0]] = AT;
+            AT->tList[0]->indexOppT[AT->indexOppT[0]] = 0;
         }
 
         AT->tList[1] = BT;
@@ -278,6 +279,7 @@ public:
             u->tList[j]->indexOppT[u->indexOppT[j]] = j;
         } else {
             u->tList[j] = 0;
+            u->indexOppT[j] = -1;
         }
 
         if (u->tList[(j+1) %3] != 0) {
@@ -287,6 +289,7 @@ public:
             t->tList[i]->indexOppT[t->indexOppT[i]] = i;
         } else {
             t->tList[i] = 0;
+            t->indexOppT[i] = -1;
         }
 
         t->tList[(i+1) %3] = u;
